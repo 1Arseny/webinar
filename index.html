@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <!-- Базовые мета-теги -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+  <!-- SEO -->
+  <title>Вебинар: Пентестинг от уязвимости до рут-доступа | Codeby Academy</title>
+  <meta name="description" content="Бесплатный вебинар от Codeby Academy. Реальные атаки, Burp Suite, SQLi, конфигурационные уязвимости. Начало 8 июля в 19:00 МСК." />
+  <meta name="keywords" content="пентест, вебинар, информационная безопасность, кибербезопасность, SQL-инъекции, WAPT, Burp Suite, хакер, обучение, Codeby Academy" />
+  <meta name="author" content="Codeby Academy" />
+  <meta name="robots" content="index, follow" />
+
+  <!-- Open Graph для соцсетей -->
+  <meta property="og:title" content="Вебинар: как думает настоящий пентестер | Codeby Academy" />
+  <meta property="og:description" content="Бесплатный онлайн вебинар 8 июля в 19:00 МСК. Разбор уязвимостей, SQL-инъекций и инструментов пентестинга." />
+  <meta property="og:image" content="https://res.cloudinary.com/drxnyjdlx/image/upload/v1750695720/logo2_k9lohp.svg" />
+  <meta property="og:url" content="https://codeby.school/webinar" />
+  <meta property="og:type" content="website" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Codeby Academy — Вебинар по пентестингу" />
+  <meta name="twitter:description" content="Бесплатный эфир 8 июля в 19:00. SQLi, Burp Suite, конфиги, уязвимости." />
+  <meta name="twitter:image" content="https://res.cloudinary.com/drxnyjdlx/image/upload/v1750695720/logo2_k9lohp.svg" />
+
+  <!-- Favicon -->
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  <!-- Styles и Script -->
+  <link rel="stylesheet" href="./dist/output.css" />
+  <script src="/src/app.js" defer></script>
+</head>
+
+<body>
+<!-- Хедер, наложен поверх секции -->
+<header class="absolute top-0 left-0 w-full z-50 px-4 py-4 backdrop-blur-md flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 sm:gap-6">
+  <a href="https://codeby.school" class="flex items-center gap-2">
+    <img src="https://res.cloudinary.com/drxnyjdlx/image/upload/v1750695720/logo2_k9lohp.svg" alt="Codeby Academy Logo" class="h-10 w-auto drop-shadow-lg" />
+  </a>
+  <div class="flex flex-col sm:flex-row flex-wrap gap-2 text-sm font-semibold text-white">
+    <span class="flex items-center gap-1 bg-orange-500 px-4 py-1 rounded-full shadow-md">🕒 08 июля 19:00 мск</span>
+    <span class="flex items-center gap-1 bg-orange-500 px-4 py-1 rounded-full shadow-md">📡 Прямой эфир</span>
+    <span class="flex items-center gap-1 bg-orange-500 px-4 py-1 rounded-full shadow-md">💸 Бесплатно</span>
+  </div>
+</header>
+
+<!-- Основной раздел -->
+<section id="home" class="relative w-full h-screen bg-black text-white overflow-hidden flex items-center justify-center">
+
+  <!-- 🖼️ Анимированный фон -->
+  <div class="absolute inset-0 z-0 bg-gradient-to-br from-gray-900 via-black to-gray-800 opacity-90">
+    <div class="absolute inset-0 animate-pulse bg-[radial-gradient(#0f0_1px,transparent_1px)] bg-[size:20px_20px] opacity-10"></div>
+    <div class="absolute inset-0 pointer-events-none">
+      <div class="absolute bottom-6 left-4 text-green-400 text-xs font-mono opacity-20 animate-scroll max-w-sm">
+        <pre>
+$ nmap -p 22,80,443 target.local
+22/tcp  open  ssh
+80/tcp  open  http
+443/tcp open  https
+
+$ sqlmap -u "http://target.local/product?id=1" --dbs
+[*] starting at 19:00...
+
+[INFO] injection point: id=1 AND 1=1
+[INFO] available databases: [admin, users, vault]
+        </pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- 🌐 Контент -->
+  <div class="relative z-10 w-full max-w-7xl px-6 md:px-10 flex flex-col md:flex-row items-center justify-between gap-12 animate-hero">
+    <div class="w-full md:w-2/3 space-y-6">
+      <h1 class="text-4xl md:text-5xl font-extrabold text-shadow leading-tight animate-slide-in">
+        От уязвимости до рут-доступа: как думает настоящий пентестер
+      </h1>
+      <p class="text-lg text-gray-300 max-w-xl animate-fade-in">
+        Вебинар с демонстрацией WAPT, SQLiM, Burp Suite и реальных атак через конфигурационные уязвимости.
+      </p>
+      <div>
+        <button onclick="openIframe()"
+          class="bg-orange-500 hover:bg-orange-600 transition text-white font-bold py-3 px-6 rounded-full shadow-md">
+          🔐 Записаться на вебинар
+        </button>
+      </div>
+    </div>
+
+    <!-- Фото -->
+    <div class="w-full md:w-auto flex justify-center animate-pop">
+      <img src="./images/lev4nko.jpg" alt="Пентестер"
+        class="w-72 h-72 rounded-full border-4 border-white shadow-2xl object-cover" />
+    </div>
+  </div>
+
+  <!-- Iframe-модалка -->
+  <div id="iframeModal"
+    class="hidden fixed inset-0 bg-black bg-opacity-80 backdrop-blur-sm z-50 flex items-center justify-center">
+    <div class="relative w-[90vw] h-[90vh] max-w-5xl">
+      <iframe src="https://webinars.codeby.school/?source=webinar-pentester"
+        class="w-full h-full border-2 border-orange-500 rounded-xl shadow-2xl"></iframe>
+      <button onclick="closeIframe()"
+        class="absolute top-2 right-2 text-white px-4 py-1 rounded-full hover:bg-red-700">✖</button>
+    </div>
+  </div>
+</section>
+
+<!-- схема 1 -->
+<section id="scheme" class="relative w-full bg-gray-950 text-white py-24 px-4 overflow-hidden">
+
+  <!-- 👾 Задний SVG-узор -->
+  <div class="absolute inset-0 z-0 opacity-10 pointer-events-none bg-[radial-gradient(#0f0_1px,transparent_1px)] bg-[size:30px_30px] animate-pulse"></div>
+  <div class="absolute inset-0 z-0 bg-gradient-to-br from-black/80 via-gray-900/60 to-black/90 backdrop-blur-sm"></div>
+
+  <div class="relative z-10 max-w-6xl mx-auto text-center">
+    <h2 class="text-3xl md:text-4xl font-bold mb-16 fade-in-up observe">
+      Схема атаки: уязвимость → эксплойт → повышение привилегий
+    </h2>
+
+    <div class="flex flex-col md:flex-row items-center justify-center gap-12 md:gap-16">
+
+      <!-- BLOCK 1 -->
+      <div class="observe fade-in-up group relative flex flex-col items-center text-center transition duration-300 hover:scale-105">
+        <div class="text-5xl mb-2">⚠️</div>
+        <div class="text-lg font-semibold">Уязвимость в коде</div>
+        <div class="text-sm text-gray-400 mt-1">HTML / Input баг</div>
+        <div class="mt-4 text-xs text-gray-500 uppercase tracking-widest">поиск</div>
+        <div class="absolute -bottom-10 w-max px-3 py-1 bg-black text-white text-xs rounded shadow-lg opacity-0 group-hover:opacity-100 transition">
+          Уязвимость валидации, XSS или SQLi
+        </div>
+      </div>
+
+      <!-- Стрелка -->
+      <div class="observe fade-in-up hidden md:block text-4xl">➡️</div>
+
+      <!-- BLOCK 2 -->
+      <div class="observe fade-in-up group relative flex flex-col items-center text-center transition duration-300 hover:scale-105">
+        <div class="text-5xl mb-2">💻</div>
+        <div class="text-lg font-semibold">Эксплойт</div>
+        <div class="text-sm text-gray-400 mt-1">curl, python exploit.py</div>
+        <div class="mt-4 text-xs text-gray-500 uppercase tracking-widest">использование</div>
+        <div class="absolute -bottom-10 w-max px-3 py-1 bg-black text-white text-xs rounded shadow-lg opacity-0 group-hover:opacity-100 transition">
+          Эксплуатация удалённо или локально
+        </div>
+      </div>
+
+      <!-- Стрелка -->
+      <div class="observe fade-in-up hidden md:block text-4xl">➡️</div>
+
+      <!-- BLOCK 3 -->
+      <div class="observe fade-in-up group relative flex flex-col items-center text-center transition duration-300 hover:scale-105">
+        <div class="text-5xl mb-2">🖥️</div>
+        <div class="text-lg font-semibold">Доступ</div>
+        <div class="text-sm text-gray-400 mt-1">access@target:~$</div>
+        <div class="mt-4 text-xs text-gray-500 uppercase tracking-widest">доступ</div>
+        <div class="absolute -bottom-10 w-max px-3 py-1 bg-black text-white text-xs rounded shadow-lg opacity-0 group-hover:opacity-100 transition">
+          Обратный шелл или доступ по SSH
+        </div>
+      </div>
+
+      <!-- Стрелка -->
+      <div class="observe fade-in-up hidden md:block text-4xl">➡️</div>
+
+      <!-- BLOCK 4 -->
+      <div class="observe fade-in-up group relative flex flex-col items-center text-center transition duration-300 hover:scale-105">
+        <div class="text-5xl mb-2">🛡️</div>
+        <div class="text-lg font-semibold">Повышение привилегий</div>
+        <div class="text-sm text-gray-400 mt-1">root / SYSTEM</div>
+        <div class="mt-4 text-xs text-gray-500 uppercase tracking-widest">контроль</div>
+        <div class="absolute -bottom-10 w-max px-3 py-1 bg-black text-white text-xs rounded shadow-lg opacity-0 group-hover:opacity-100 transition">
+          Через sudo, эксплойт ядра, token hijack
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+<!-- лабораторная среда -->
+<section id="lab-environment" class="w-full bg-gray-950 text-white py-20 px-4">
+  <div class="max-w-6xl mx-auto space-y-12 observe">
+    <h2 class="text-3xl md:text-4xl font-bold text-center">Лабораторная среда: SQL-инъекции и XSS</h2>
+
+    <div class="flex flex-col md:flex-row gap-8 md:gap-12 items-start justify-center relative">
+
+      <!-- 🖥️ Терминал -->
+      <div id="terminal-output" class="bg-black text-green-400 font-mono text-sm rounded-xl p-6 w-full md:w-1/2 shadow-xl border border-green-600 observe">
+        <div class="mb-2 text-gray-400">Терминал: SQLMap</div>
+        <!-- Сюда будет печататься контент -->
+      </div>
+
+      <!-- 🌐 Веб-интерфейс -->
+      <div id="xss-panel" class="relative bg-[#1f2937] rounded-xl p-6 w-full md:w-1/2 text-sm shadow-xl border border-gray-700 observe">
+        <div class="text-indigo-300 mb-2">Веб-интерфейс: XSS</div>
+        <p><strong class="text-white">Поиск:</strong> <code class="text-pink-400">&lt;script&gt;alert(1)&lt;/script&gt;</code></p>
+
+        <!-- ✅ Сообщение об успешной XSS -->
+        <div class="mt-4 bg-yellow-600 text-white px-4 py-2 rounded flex items-center gap-2">
+          <span class="text-lg">🔴</span> <span>Уязвимость выполнена — всплывающее окно отобразилось на сайте</span>
+        </div>
+
+        <!-- 💬 Псевдо-alert окно -->
+        <div id="fake-alert" class="hidden absolute top-16 left-6 w-64 bg-gray-100 border border-gray-400 shadow-lg rounded text-black z-50">
+          <div class="bg-gray-300 text-sm font-bold px-3 py-1 border-b border-gray-400 flex items-center justify-between">
+            <span>Alert</span>
+            <button onclick="closeFakeAlert()" class="text-gray-600 hover:text-black">&times;</button>
+          </div>
+          <div class="p-4 text-sm">
+            <p>1</p>
+          </div>
+          <div class="px-4 pb-3 flex justify-end">
+            <button onclick="closeFakeAlert()" class="bg-gray-300 hover:bg-gray-400 px-4 py-1 rounded border border-gray-400 text-sm">OK</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 📝 Подпись -->
+    <p class="text-center text-gray-400 text-sm mt-8">Так выглядит реальная практика в наших лабораториях</p>
+  </div>
+</section>
+<!-- сравнение обучения -->
+<section id="compare" class="relative w-full text-white py-24 px-4 overflow-hidden bg-gradient-to-br from-gray-900 via-gray-950 to-gray-800">
+    <div class="bg-grid"></div>
+
+  <!-- 🎥 Matrix дождь -->
+  <canvas id="matrix-canvas" class="absolute inset-0 w-full h-full -z-10"></canvas>
+
+  <!-- 💬 Всплывающие сообщения -->
+  <div id="console-messages" class="absolute top-10 left-4 z-10 space-y-2 text-green-400 text-xs font-mono opacity-80"></div>
+     <!-- 🔵 Пульсирующие кольца -->
+        <div id="ring-container" class="absolute inset-0 z-0 pointer-events-none overflow-hidden"></div>
+  <div class="relative z-10 max-w-6xl mx-auto text-center">
+    <h2 class="text-3xl md:text-4xl font-bold mb-12">Классическое обучение vs Codeby-подход</h2>
+
+    <div class="flex flex-col md:flex-row gap-10">
+      <!-- 📘 Классика -->
+      <div class="w-full md:w-1/2 p-6 border border-gray-700 rounded-xl bg-gray-900/40">
+       
+
+        <h3 class="text-xl font-bold mb-4">📖 Учебник</h3>
+        <ul class="space-y-2 text-sm text-gray-300">
+          <li>❌ Теория XSS из PDF</li>
+          <li>❌ SQL-запрос на бумаге</li>
+          <li>❌ Скрин ошибки в презентации</li>
+          <li>❌ “Что такое root?”</li>
+        </ul>
+      </div>
+
+      <!-- 🧠 Codeby -->
+      <div id="codeby-interactive" class="relative w-full md:w-1/2 p-6 border-2 border-orange-500 rounded-xl overflow-hidden group bg-gray-900/40">
+        <div id="codeby-glow" class="absolute inset-0 z-0 transition duration-200"></div>
+        <h3 class="relative text-xl font-bold mb-4 z-10">💻 Реальная практика (Codeby)</h3>
+        <ul class="relative z-10 space-y-2 text-sm text-gray-200">
+          <li>✅ Запуск XSS в живом браузере</li>
+          <li>✅ sqlmap на реальной цели</li>
+          <li>✅ Настоящий баг в лаборатории</li>
+          <li>✅ Получение root-доступа в live-лабах</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="mt-12">
+      <button onclick="openIframe()" class="bg-orange-500 hover:bg-orange-600 transition text-white font-bold py-3 px-6 rounded-full shadow-md">
+        👉 Хочешь по-настоящему? Регистрируйся на вебинар
+      </button>
+    </div>
+  </div>
+</section>
+<!-- инфо-блок -->
+<section id="info" class="relative w-full bg-gradient-to-br from-gray-900 via-gray-950 to-gray-800 text-white py-20 px-4 overflow-hidden">
+  <div class="max-w-4xl mx-auto">
+    <button onclick="openIframe()"
+      class="observe fade-in-up group w-full flex items-center justify-center gap-4 px-6 py-5 rounded-xl border border-gray-700 shadow-xl backdrop-blur-md bg-gray-900/60 hover:bg-gray-800/70 transition-all duration-300 hover:scale-[1.02] relative">
+
+      <!-- Пульсирующий фон -->
+      <div class="absolute inset-0 rounded-xl animate-ping-slow bg-orange-400/10 group-hover:bg-orange-400/20 z-0"></div>
+
+      <!-- Контент -->
+      <div class="relative z-10 text-3xl">🗓</div>
+      <div class="relative z-10 text-left">
+        <div class="text-lg md:text-xl font-bold">8 июля в 19:00 (МСК)</div>
+        <div class="text-sm text-gray-300">📍 Онлайн | Участие бесплатно по регистрации</div>
+      </div>
+    </button>
+  </div>
+</section>
+<!-- описание вебинара -->
+<section id="description-block" class="relative w-full py-20 px-4 bg-gray-950 text-white overflow-hidden">
+  <!-- 🌌 Фон: пульсация + typing -->
+  <div class="absolute inset-0 z-0 pointer-events-none">
+    <!-- Пульсирующие кольца -->
+    <div class="absolute top-1/2 left-1/2 w-[300px] h-[300px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-green-500 animate-pulse opacity-10"></div>
+    <div class="absolute top-1/2 left-1/2 w-[450px] h-[450px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-green-500 animate-pulse opacity-5 delay-300"></div>
+    
+    <!-- Терминалный "печатающийся" фон -->
+    <div class="absolute bottom-4 left-4 text-green-400 text-xs font-mono opacity-30 whitespace-pre-wrap max-w-[90%]" id="typed-output"></div>
+  </div>
+
+  <!-- 📄 Основной текст поверх -->
+  <div class="relative z-10 max-w-4xl mx-auto text-center px-4">
+    <h2 class="text-2xl md:text-3xl font-bold mb-6 leading-relaxed">
+      Научись находить уязвимости, использовать эксплойты и поднимать привилегии — прямо на вебинаре.
+    </h2>
+    <p class="text-gray-300 leading-relaxed text-base md:text-lg mb-8">
+      Покажем, как работает обучение на наших курсах, разберём задания из лабораторий <strong>WAPT</strong> и <strong>SQLiM</strong>, и расскажем, как ошибки конфигурации позволяют получить контроль над системой.
+    </p>
+  </div>
+   <div id="command-rain" class="absolute inset-0 z-0 pointer-events-none overflow-hidden"></div>
+</section>
+<!-- что будет на вебинаре -->
+<section id="desc-web-tez" class="relative w-full bg-gray-950 text-white py-24 px-4 overflow-hidden">
+    <svg class="absolute inset-0 w-full h-full pointer-events-none z-0 opacity-20 animate-crack" viewBox="0 0 100 100" preserveAspectRatio="none">
+    <polyline points="0,50 20,48 30,60 40,30 55,70 70,20 80,50 100,45" fill="none" stroke="#ff4500" stroke-width="0.5" stroke-linecap="round" stroke-linejoin="round" />
+    </svg>
+  <!-- 🌫️ Дым на фоне -->
+  <div class="absolute inset-0 z-0 pointer-events-none">
+    <div class="smoke"></div>
+    <div class="smoke delay-2"></div>
+    <div class="smoke delay-4"></div>
+  </div>
+  
+  <div class="max-w-5xl mx-auto text-center relative z-10">
+    <h2 class="text-3xl md:text-4xl font-bold mb-12">Что будет на вебинаре?</h2>
+
+    <div class="grid md:grid-cols-2 gap-6 text-left">
+
+      <!-- Блок 1 -->
+      <div class="group relative p-6 bg-gray-900/70 rounded-xl border border-gray-700 transition duration-300 hover:shadow-xl hover:border-orange-400 hover:bg-gray-800/90 overflow-hidden">
+        <div class="absolute inset-0 bg-orange-400/10 blur-xl opacity-0 group-hover:opacity-20 transition pointer-events-none z-0"></div>
+        <div class="relative z-10">
+          <div class="text-2xl mb-2 group-hover:scale-125 transition-transform">🔍</div>
+          <h3 class="text-lg font-bold mb-1">Обзор курсов</h3>
+          <p class="text-sm text-gray-300">Структура, темы и формат обучения</p>
+        </div>
+      </div>
+
+      <!-- Блок 2 -->
+      <div class="group relative p-6 bg-gray-900/70 rounded-xl border border-gray-700 transition duration-300 hover:shadow-xl hover:border-orange-400 hover:bg-gray-800/90 overflow-hidden">
+        <div class="absolute inset-0 bg-orange-400/10 blur-xl opacity-0 group-hover:opacity-20 transition pointer-events-none z-0"></div>
+        <div class="relative z-10">
+          <div class="text-2xl mb-2 group-hover:scale-125 transition-transform">🧪</div>
+          <h3 class="text-lg font-bold mb-1">Живой разбор</h3>
+          <p class="text-sm text-gray-300">Практика из наших лабораторий</p>
+        </div>
+      </div>
+
+      <!-- Блок 3 -->
+      <div class="group relative p-6 bg-gray-900/70 rounded-xl border border-gray-700 transition duration-300 hover:shadow-xl hover:border-orange-400 hover:bg-gray-800/90 overflow-hidden">
+        <div class="absolute inset-0 bg-orange-400/10 blur-xl opacity-0 group-hover:opacity-20 transition pointer-events-none z-0"></div>
+        <div class="relative z-10">
+          <div class="text-2xl mb-2 group-hover:scale-125 transition-transform">🧨</div>
+          <h3 class="text-lg font-bold mb-1">Поиск уязвимостей</h3>
+          <p class="text-sm text-gray-300">И использование эксплойтов</p>
+        </div>
+      </div>
+
+      <!-- Блок 4 -->
+      <div class="group relative p-6 bg-gray-900/70 rounded-xl border border-gray-700 transition duration-300 hover:shadow-xl hover:border-orange-400 hover:bg-gray-800/90 overflow-hidden">
+        <div class="absolute inset-0 bg-orange-400/10 blur-xl opacity-0 group-hover:opacity-20 transition pointer-events-none z-0"></div>
+        <div class="relative z-10">
+          <div class="text-2xl mb-2 group-hover:scale-125 transition-transform">⚠️</div>
+          <h3 class="text-lg font-bold mb-1">Ошибки конфигурации</h3>
+          <p class="text-sm text-gray-300">Что ведут к компрометации</p>
+        </div>
+      </div>
+
+      <!-- Блок 5 -->
+      <div class="group relative p-6 bg-gray-900/70 rounded-xl border border-gray-700 transition duration-300 hover:shadow-xl hover:border-orange-400 hover:bg-gray-800/90 overflow-hidden md:col-span-2">
+        <div class="absolute inset-0 bg-orange-400/10 blur-xl opacity-0 group-hover:opacity-20 transition pointer-events-none z-0"></div>
+        <div class="relative z-10">
+          <div class="text-2xl mb-2 group-hover:scale-125 transition-transform">🛡</div>
+          <h3 class="text-lg font-bold mb-1">Повышение привилегий</h3>
+          <p class="text-sm text-gray-300">Тактики в реальном пентесте</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+<!-- автор -->
+<section id="author" class="relative bg-black text-white py-28 px-6 overflow-hidden">
+    <div id="data-leak-animation"></div>
+
+  <!-- CRT шум -->
+  <canvas id="crt-noise-author" class="absolute inset-0 w-full h-full pointer-events-none z-0"></canvas>
+
+  <div class="relative z-10 max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-center gap-16">
+    <!-- Фото -->
+    <div class="relative border-4 border-orange-500 rounded-full overflow-hidden w-72 h-72 shadow-2xl shrink-0">
+      <img src="./images/lev4nko.jpg" alt="Александр Медведев" class="w-full h-full object-cover">
+    </div>
+
+    <!-- Текст -->
+    <div class="text-center md:text-left max-w-2xl">
+      <p class="text-lg text-orange-400 font-mono uppercase tracking-[0.25em] mb-4">Автор вебинара</p>
+      <h3 class="text-5xl font-bold text-orange-500 mb-6">Александр Медведев</h3>
+      <p class="text-gray-300 italic text-xl mb-6">Профессиональный пентестер с опытом более 10 лет</p>
+      <ul class="text-gray-400 space-y-3 text-lg leading-relaxed">
+        <li>🎓 МЭСИ, КОИБАС — высшее образование в области ИБ</li>
+        <li>📜 Сертификаты: OSCP, PNPT, CEH, CWAPT, SQLIM</li>
+        <li>🏆 Победитель Standoff в команде Codeby — 3 раза подряд</li>
+        <li>📅 2022, весна и осень 2023</li>
+      </ul>
+    </div>
+  </div>
+</section>
+<!-- для кого -->
+<section id="for-whom" class="relative bg-black text-green-400 font-mono py-20 px-4 overflow-hidden"
+         style="background-image: linear-gradient(to right, rgba(0,255,0,0.05) 1px, transparent 1px),
+                                linear-gradient(to bottom, rgba(0,255,0,0.05) 1px, transparent 1px);
+                background-size: 40px 40px;">
+
+  <div class="relative z-10 max-w-3xl mx-auto animate-typewriter border border-green-500 p-6 rounded-lg bg-black/90 shadow-[0_0_20px_#00ff1188]">
+    
+    <!-- Заголовок -->
+    <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold mb-6 tracking-wide uppercase">
+      > Для кого вебинар:
+    </h2>
+
+    <!-- Список -->
+    <ul class="space-y-3 mb-8 text-base sm:text-lg leading-relaxed pl-4">
+      <li>▌ Для тех, кто хочет изучать кибербезопасность не по учебнику, а через практику</li>
+      <li>▌ Для начинающих пентестеров и студентов ИБ</li>
+      <li>▌ Для всех, кто хочет понять, как устроено наше обучение "изнутри"</li>
+    </ul>
+
+    <!-- Призыв + фейк инпут -->
+    <div class="mb-4 flex items-start gap-2">
+      <span>✉</span>
+      <p>
+        Оставьте почту — пришлём ссылку на вебинар и чеклист:
+        <br/>
+        <span class="text-green-300 font-semibold">"10 типовых ошибок в конфигурации, которые ведут к взлому"</span>
+      </p>
+    </div>
+
+    <!-- Фейковый инпут как будто терминал -->
+    <div
+      onclick="openIframe()"
+      class="relative group cursor-pointer w-full sm:w-[420px] bg-black border border-green-500 px-4 py-3 rounded-md text-green-400 text-sm tracking-wider flex justify-between items-center hover:brightness-125 transition"
+    >
+      <span class="select-none">> Введите ваш email</span>
+      <span class="text-green-300 text-lg group-hover:translate-x-1 transition">█</span>
+    </div>
+  </div>
+
+  <!-- шум/эффекты -->
+  <canvas id="crt-noise-author"></canvas>
+  <div id="data-leak-animation"></div>
+</section>
+<!-- и так понятно -->
+<footer class="bg-[#0a0f1f] text-white py-10 px-6 border-t border-gray-700/40">
+  <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-start gap-8">
+    
+    <!-- Левая часть: название и документы -->
+    <div>
+      <div class="mb-2 text-sm">
+        АНО ДПО «Академия Цифровой Защиты» © 2025
+      </div>
+      <a href="https://codeby.school/page/Documents" class="text-orange-500 font-semibold hover:underline text-sm">
+        Документы
+      </a>
+    </div>
+
+    <!-- Правая часть: иконки -->
+    <div class="flex items-center gap-4">
+      <a href="https://t.me/codeby_sec" target="_blank" class="text-black rounded-full p-2 hover:opacity-80 transition">
+        <img src="./images/telegram.svg" alt="Telegram" class="w-8 h-8" />
+      </a>
+      <a href="https://vk.com/codeby" target="_blank" class="text-black rounded-full p-2 hover:opacity-80 transition">
+        <img src="./images/vk.svg" alt="Telegram" class="w-8 h-8" />
+      </a>
+      <a href="https://www.youtube.com/c/TheCodeby" target="_blank" class="text-black rounded-full p-2 hover:opacity-80 transition">
+        <img src="./images/youtube.svg" alt="Telegram" class="w-8 h-8" />
+      </a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
