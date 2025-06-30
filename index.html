@@ -36,24 +36,34 @@
 
 <body>
 <!-- HEADER -->
-<header class="absolute top-0 left-0 w-full z-50 text-white px-6 py-4 md:px-10">
+
+<!-- HERO SECTION -->
+<section class="relative min-h-screen flex flex-col items-center justify-center px-6 pb-16 bg-black text-white">
+
+  <header class="top-0 left-0 w-full z-50 text-white px-6 py-4 md:px-10">
   <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
     <!-- Logo -->
     <div class="flex items-center gap-3">
       <img src="https://res.cloudinary.com/drxnyjdlx/image/upload/v1750695720/logo2_k9lohp.svg" alt="Codeby Logo" class="h-10 w-auto" />
+
     </div>
 
     <!-- Info badges -->
-    <div class="flex flex-col md:flex-row items-center gap-2 text-sm md:gap-4">
-      <span class="flex items-center gap-1 bg-orange-500 px-4 py-1 rounded-full shadow-md">🕒 08 июля 19:00 мск</span>
-      <span class="flex items-center gap-1 bg-orange-500 px-4 py-1 rounded-full shadow-md">📡 Прямой эфир</span>
-      <span class="flex items-center gap-1 bg-orange-500 px-4 py-1 rounded-full shadow-md">💸 Бесплатно</span>
-    </div>
+    <div class="flex flex-col w-full space-y-2 md:flex-row md:space-y-0 md:space-x-4 md:w-auto md:justify-end">
+  <span class="flex items-center justify-center gap-2 bg-orange-500 px-6 py-2 rounded-full shadow-md w-full md:w-[220px]">
+    🕒 08 июля 19:00 мск
+  </span>
+  <span class="flex items-center justify-center gap-2 bg-orange-500 px-6 py-2 rounded-full shadow-md w-full md:w-[220px]">
+    📡 Прямой эфир
+  </span>
+  <span class="flex items-center justify-center gap-2 bg-orange-500 px-6 py-2 rounded-full shadow-md w-full md:w-[220px]">
+    💸 Бесплатно
+  </span>
+</div>
+
   </div>
 </header>
 
-<!-- HERO SECTION -->
-<section class="relative min-h-screen flex items-center justify-center px-6 pt-40 md:pt-42 pb-16 bg-black text-white">
   <!-- Фон-сетка -->
   <div class="absolute inset-0 bg-gradient-to-br from-gray-900 via-black to-gray-800 z-0">
     <div class="absolute inset-0 animate-pulse bg-[radial-gradient(#0f0_1px,transparent_1px)] bg-[size:20px_20px] opacity-10"></div>
