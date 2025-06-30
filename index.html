@@ -35,77 +35,61 @@
 </head>
 
 <body>
-<!-- Хедер, наложен поверх секции -->
-<header class="absolute top-0 left-0 w-full z-50 px-4 py-4 backdrop-blur-md flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 sm:gap-6">
-  <a href="https://codeby.school" class="flex items-center gap-2">
-    <img src="https://res.cloudinary.com/drxnyjdlx/image/upload/v1750695720/logo2_k9lohp.svg" alt="Codeby Academy Logo" class="h-10 w-auto drop-shadow-lg" />
-  </a>
-  <div class="flex flex-col sm:flex-row flex-wrap gap-2 text-sm font-semibold text-white">
-    <span class="flex items-center gap-1 bg-orange-500 px-4 py-1 rounded-full shadow-md">🕒 08 июля 19:00 мск</span>
-    <span class="flex items-center gap-1 bg-orange-500 px-4 py-1 rounded-full shadow-md">📡 Прямой эфир</span>
-    <span class="flex items-center gap-1 bg-orange-500 px-4 py-1 rounded-full shadow-md">💸 Бесплатно</span>
+<!-- HEADER -->
+<header class="absolute top-0 left-0 w-full z-50 text-white px-6 py-4 md:px-10">
+  <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+    <!-- Logo -->
+    <div class="flex items-center gap-3">
+      <img src="https://res.cloudinary.com/drxnyjdlx/image/upload/v1750695720/logo2_k9lohp.svg" alt="Codeby Logo" class="h-10 w-auto" />
+    </div>
+
+    <!-- Info badges -->
+    <div class="flex flex-col md:flex-row items-center gap-2 text-sm md:gap-4">
+      <span class="flex items-center gap-1 bg-orange-500 px-4 py-1 rounded-full shadow-md">🕒 08 июля 19:00 мск</span>
+      <span class="flex items-center gap-1 bg-orange-500 px-4 py-1 rounded-full shadow-md">📡 Прямой эфир</span>
+      <span class="flex items-center gap-1 bg-orange-500 px-4 py-1 rounded-full shadow-md">💸 Бесплатно</span>
+    </div>
   </div>
 </header>
 
-<!-- Основной раздел -->
-<section id="home" class="relative w-full h-screen bg-black text-white overflow-hidden flex items-center justify-center">
-
-  <!-- 🖼️ Анимированный фон -->
-  <div class="absolute inset-0 z-0 bg-gradient-to-br from-gray-900 via-black to-gray-800 opacity-90">
+<!-- HERO SECTION -->
+<section class="relative min-h-screen flex items-center justify-center px-6 pt-40 md:pt-42 pb-16 bg-black text-white">
+  <!-- Фон-сетка -->
+  <div class="absolute inset-0 bg-gradient-to-br from-gray-900 via-black to-gray-800 z-0">
     <div class="absolute inset-0 animate-pulse bg-[radial-gradient(#0f0_1px,transparent_1px)] bg-[size:20px_20px] opacity-10"></div>
-    <div class="absolute inset-0 pointer-events-none">
-      <div class="absolute bottom-6 left-4 text-green-400 text-xs font-mono opacity-20 animate-scroll max-w-sm">
-        <pre>
-$ nmap -p 22,80,443 target.local
-22/tcp  open  ssh
-80/tcp  open  http
-443/tcp open  https
-
-$ sqlmap -u "http://target.local/product?id=1" --dbs
-[*] starting at 19:00...
-
-[INFO] injection point: id=1 AND 1=1
-[INFO] available databases: [admin, users, vault]
-        </pre>
-      </div>
-    </div>
   </div>
 
-  <!-- 🌐 Контент -->
-  <div class="relative z-10 w-full max-w-7xl px-6 md:px-10 flex flex-col md:flex-row items-center justify-between gap-12 animate-hero">
-    <div class="w-full md:w-2/3 space-y-6">
-      <h1 class="text-4xl md:text-5xl font-extrabold text-shadow leading-tight animate-slide-in">
-        От уязвимости до рут-доступа: как думает настоящий пентестер
+  <!-- Контент -->
+  <div class="relative z-10 max-w-7xl w-full flex flex-col md:flex-row items-center justify-between gap-12">
+    <!-- Текст -->
+    <div class="w-full md:w-2/3 space-y-6 text-left">
+      <h1 class="text-4xl md:text-5xl font-extrabold leading-tight">
+        От уязвимости до рут-доступа:<br />как думает настоящий пентестер
       </h1>
-      <p class="text-lg text-gray-300 max-w-xl animate-fade-in">
-        Вебинар с демонстрацией WAPT, SQLiM, Burp Suite и реальных атак через конфигурационные уязвимости.
+      <p class="text-lg text-gray-300 max-w-xl">
+        Вебинар с демонстрацией WAPT, SQLiM, Burp Suite и реальных атак<br />через конфигурационные уязвимости.
       </p>
-      <div>
-        <button onclick="openIframe()"
-          class="bg-orange-500 hover:bg-orange-600 transition text-white font-bold py-3 px-6 rounded-full shadow-md">
-          🔐 Записаться на вебинар
-        </button>
-      </div>
+      <button onclick="openIframe()"
+        class="bg-orange-500 hover:bg-orange-600 transition text-white font-bold py-3 px-6 rounded-full shadow-md">
+        🔐 Записаться на вебинар
+      </button>
     </div>
 
     <!-- Фото -->
-    <div class="w-full md:w-auto flex justify-center animate-pop">
+    <div class="w-full md:w-auto flex justify-center">
       <img src="./images/lev4nko.jpg" alt="Пентестер"
         class="w-72 h-72 rounded-full border-4 border-white shadow-2xl object-cover" />
     </div>
   </div>
-
-  <!-- Iframe-модалка -->
-  <div id="iframeModal"
-    class="hidden fixed inset-0 bg-black bg-opacity-80 backdrop-blur-sm z-50 flex items-center justify-center">
+  <!-- модалка -->
+   <div id="iframeModal" class="hidden fixed inset-0 bg-black bg-opacity-80 backdrop-blur-sm z-50 flex items-center justify-center">
     <div class="relative w-[90vw] h-[90vh] max-w-5xl">
-      <iframe src="https://webinars.codeby.school/?source=webinar-pentester"
-        class="w-full h-full border-2 border-orange-500 rounded-xl shadow-2xl"></iframe>
-      <button onclick="closeIframe()"
-        class="absolute top-2 right-2 text-white px-4 py-1 rounded-full hover:bg-red-700">✖</button>
+      <iframe src="https://webinars.codeby.school/?source=webinar-pentester" class="w-full h-full border-2 border-orange-500 rounded-xl shadow-2xl"></iframe>
+      <button onclick="closeIframe()" class="absolute top-2 right-2 text-white px-4 py-1 rounded-full hover:bg-red-700">✖</button>
     </div>
   </div>
 </section>
+
 
 <!-- схема 1 -->
 <section id="scheme" class="relative w-full bg-gray-950 text-white py-24 px-4 overflow-hidden">
