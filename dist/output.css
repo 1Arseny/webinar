@@ -936,10 +936,6 @@ video {
   justify-content: space-between;
 }
 
-.gap-1 {
-  gap: 0.25rem;
-}
-
 .gap-10 {
   gap: 2.5rem;
 }
@@ -1273,10 +1269,6 @@ video {
 .py-5 {
   padding-top: 1.25rem;
   padding-bottom: 1.25rem;
-}
-
-.pb-10 {
-  padding-bottom: 2.5rem;
 }
 
 .pb-16 {
@@ -2044,10 +2036,6 @@ video {
     display: block;
   }
 
-  .md\:h-full {
-    height: 100%;
-  }
-
   .md\:w-1\/2 {
     width: 50%;
   }
@@ -2056,12 +2044,12 @@ video {
     width: 66.666667%;
   }
 
-  .md\:w-auto {
-    width: auto;
-  }
-
   .md\:w-\[220px\] {
     width: 220px;
+  }
+
+  .md\:w-auto {
+    width: auto;
   }
 
   .md\:grid-cols-2 {
@@ -2082,10 +2070,6 @@ video {
 
   .md\:gap-16 {
     gap: 4rem;
-  }
-
-  .md\:gap-4 {
-    gap: 1rem;
   }
 
   .md\:space-x-4 > :not([hidden]) ~ :not([hidden]) {
