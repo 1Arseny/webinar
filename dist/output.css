@@ -981,6 +981,10 @@ video {
   white-space: pre-wrap;
 }
 
+.rounded-2xl {
+  border-radius: 1rem;
+}
+
 .rounded-full {
   border-radius: 9999px;
 }
@@ -1080,6 +1084,10 @@ video {
 
 .bg-gray-900\/70 {
   background-color: rgb(17 24 39 / 0.7);
+}
+
+.bg-gray-900\/80 {
+  background-color: rgb(17 24 39 / 0.8);
 }
 
 .bg-gray-950 {
@@ -1269,6 +1277,11 @@ video {
 .py-5 {
   padding-top: 1.25rem;
   padding-bottom: 1.25rem;
+}
+
+.py-8 {
+  padding-top: 2rem;
+  padding-bottom: 2rem;
 }
 
 .pb-16 {
