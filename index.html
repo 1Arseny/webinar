@@ -37,7 +37,14 @@
 
 <!-- HERO SECTION -->
 <section class="relative min-h-screen flex flex-col items-center justify-center px-6 pb-16 bg-black text-white">
+<script>
+  window.addEventListener('message', function(event) {
+  if (event.data === 'open_tg_channel') {
+    window.open('https://t.me/codeby_sec', '_blank');
+  }
+});
 
+</script>
   <!-- Хедер -->
   <header class="top-0 left-0 w-full z-10 text-white px-6 py-4 md:px-10">
     <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
