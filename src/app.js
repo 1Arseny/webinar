@@ -1,4 +1,3 @@
-// ─────────── 🌐 Общий функционал: открытие модалки ───────────
 function openIframe() {
   document.getElementById('iframeModal').classList.remove('hidden');
 }
@@ -9,101 +8,128 @@ document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape') closeIframe();
 });
 
-// ─────────── 1. Анимация Bash-блока (OSINT сравнение) ───────────
-const osintLines = [
-  "┌─────────────────────────┬─────────────────────────────┐",
-  "│ Вакансия:               │ Реальность:                 │",
-  "│ \"Требуется              | Собес: найдите ИНН по       |", 
-  "|    OSINT-специалист\"    │ номеру машины и TikTok\"     |",
-  "│                         │                             │",
-  "└─────────────────────────┴─────────────────────────────┘"
-];
+const waptLines = [
+      "┌──────────────────────────────┬──────────────────────────────────────────────┐",
+      "│ Маркетинг / ожидания         │ Практика WAPT (black-box)                    │",
+      "├──────────────────────────────┼──────────────────────────────────────────────┤",
+      "│ «Запусти сканер и готово»    │ Где сканер молчит — включается логика        │",
+      "│ «Подбери payload по списку»  │ Анализ флоу, ролей, валидаций, бизнес-правил │",
+      "│ «Это всё про XSS»            │ Серверные баги: логика, доступ, интеграции   │",
+      "│ «Достаточно Burp»            │ Burp + мышление + методология + заметки      │",
+      "└──────────────────────────────┴──────────────────────────────────────────────┘"
+    ];
 
+    function typeBash(lines, targetId, lineDelay = 220, charDelay = 10) {
+      const el = document.getElementById(targetId);
+      if (!el) return;
 
-function typeBash(lines, targetId, lineDelay = 250, charDelay = 13) {
-  const el = document.getElementById(targetId);
-  if (!el) return;
-  el.textContent = "";
-  let line = 0, char = 0;
+      el.textContent = "";
+      let line = 0;
+      let char = 0;
 
-  function typeLine() {
-    if (line >= lines.length) return;
-    const currentLine = lines[line];
-    let printed = "";
+      function typeLine() {
+        if (line >= lines.length) return;
 
-    function typeChar() {
-      if (char < currentLine.length) {
-        printed += currentLine[char];
-        el.textContent = (el.textContent.split("\n").slice(0, line).join("\n") + (line > 0 ? "\n" : "") + printed);
-        char++;
-        setTimeout(typeChar, charDelay);
-      } else {
-        el.textContent += (line < lines.length - 1 ? "\n" : "");
-        line++;
-        char = 0;
-        setTimeout(typeLine, lineDelay);
+        const currentLine = lines[line];
+        let printed = "";
+
+        function typeChar() {
+          if (char < currentLine.length) {
+            printed += currentLine[char];
+            el.textContent =
+              el.textContent.split("\n").slice(0, line).join("\n") +
+              (line > 0 ? "\n" : "") +
+              printed;
+
+            char++;
+            setTimeout(typeChar, charDelay);
+          } else {
+            el.textContent += line < lines.length - 1 ? "\n" : "";
+            line++;
+            char = 0;
+            setTimeout(typeLine, lineDelay);
+          }
+        }
+
+        typeChar();
       }
+
+      typeLine();
     }
-    typeChar();
-  }
-  typeLine();
-}
-const bashBlock = document.getElementById('osint-bash-block');
-if (bashBlock) {
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        typeBash(osintLines, 'osint-bash-block');
-        observer.unobserve(bashBlock);
+
+    const waptBlock = document.getElementById("wapt-bash-block");
+    if (waptBlock) {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              typeBash(waptLines, "wapt-bash-block");
+              observer.unobserve(waptBlock);
+            }
+          });
+        },
+        { threshold: 0.5 }
+      );
+
+      observer.observe(waptBlock);
+    }
+    const waptTypingLines = [
+      "$ recon: map attack surface ...",
+      "→ endpoints: /auth /api /billing /admin",
+      "→ roles: guest / user / manager",
+      "→ stateful flow detected: checkout -> confirm -> pay",
+      "",
+      "$ scanner: signatures matched ...",
+      "→ 0 critical found (⚠️ not a guarantee)",
+      "",
+      "$ manual: test business logic ...",
+      "→ IDOR candidate in /api/orders/{id}",
+      "→ auth bypass hypothesis: token reuse in refresh flow",
+      "→ rate limits: inconsistent between routes",
+      "",
+      "done: prioritize by impact, not by payload list."
+    ];
+
+    function typeLoop(lines, targetId, charDelay = 18, linePause = 520) {
+      const el = document.getElementById(targetId);
+      if (!el) return;
+
+      let lineIdx = 0;
+      let charIdx = 0;
+
+
+      function tick() {
+        if (lineIdx >= lines.length) {
+          setTimeout(() => {
+            el.textContent = "";
+            lineIdx = 0;
+            charIdx = 0;
+            tick();
+          }, 2000);
+          return;
+        }
+
+        const current = lines[lineIdx];
+
+        if (charIdx < current.length) {
+          el.textContent = el.textContent.replace(/\u2588/g, "") + current[charIdx] + cursor();
+          charIdx++;
+          setTimeout(tick, charDelay);
+        } else {
+          el.textContent = el.textContent.replace(/\u2588/g, "") + "\n";
+          charIdx = 0;
+          lineIdx++;
+          setTimeout(tick, linePause + Math.random() * 240);
+        }
       }
+
+      tick();
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      typeLoop(waptTypingLines, "wapt-typing", 18, 520);
     });
-  }, { threshold: 0.5 });
-  observer.observe(bashBlock);
-}
 
-// ─────────── 2. Анимация "Пробива" для фонового typing ───────────
-const osintProbingLines = [
-  "Поиск профиля: @name ...",
-  "Имя: User U.",
-  "VK: vk.com/name — найдено",
-  "Telegram: @user — найден",
-  "E-mail: u*******@mail.ru",
-  "Авто: Lexus RX (А777АА77)",
-  "ИНН: ************",
-  "Скан открытых источников...",
-  "TikTok: найден аккаунт",
-  "Github: найдено 2 репозитория",
-  "Публичные фото: найдено 14",
-  "Пробив завершён. ✨"
-];
-function typeOsintProbe(lines, targetId, delay = 28, pause = 700) {
-  const el = document.getElementById(targetId);
-  if (!el) return;
-  el.textContent = "";
-  let lineIdx = 0, charIdx = 0;
-  function nextChar() {
-    if (lineIdx >= lines.length) {
-      setTimeout(() => { el.textContent = ""; lineIdx = 0; charIdx = 0; nextChar(); }, 2400);
-      return;
-    }
-    if (charIdx < lines[lineIdx].length) {
-      el.textContent = el.textContent.replace(/\u2588/g, "") + lines[lineIdx][charIdx] + "\u2588";
-      charIdx++;
-      setTimeout(nextChar, delay);
-    } else {
-      el.textContent = el.textContent.replace(/\u2588/g, "") + "\n";
-      charIdx = 0;
-      lineIdx++;
-      setTimeout(nextChar, pause + Math.random() * 400);
-    }
-  }
-  nextChar();
-}
-document.addEventListener("DOMContentLoaded", () => {
-  typeOsintProbe(osintProbingLines, "osint-typing", 28, 700);
-});
-
-// ─────────── 3. Matrix-анимация для OSINT-demand блока ───────────
 (function(){
   const canvas = document.getElementById("matrix-bg-osint");
   if (!canvas) return;
@@ -145,7 +171,6 @@ document.addEventListener("DOMContentLoaded", () => {
   draw();
 })();
 
-// ─────────── 4. IntersectionObserver для плавных появлений ───────────
 const globalObserver = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if (!entry.isIntersecting) return;
@@ -157,7 +182,6 @@ const globalObserver = new IntersectionObserver((entries) => {
 document.querySelectorAll('.observe').forEach(el => {
   globalObserver.observe(el);
 });
-// ─────────── 6. автор───────────
 document.addEventListener('DOMContentLoaded', () => {
   const crtCanvas = document.getElementById('crt-noise-author');
   if (!crtCanvas) return;
@@ -171,10 +195,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const img = ctx.createImageData(w, h);
     for (let i = 0; i < img.data.length; i += 4) {
       const val = Math.random() * 255;
-      img.data[i] = val;   // R
-      img.data[i + 1] = val; // G
-      img.data[i + 2] = val; // B
-      img.data[i + 3] = 26; // Alpha (0..255)
     }
     ctx.putImageData(img, 0, 0);
     requestAnimationFrame(drawCRT);
@@ -183,7 +203,6 @@ document.addEventListener('DOMContentLoaded', () => {
   resize();
   drawCRT();
 });
-//  ─────────── 7. для кого───────────
 document.addEventListener('DOMContentLoaded', () => {
   const crtCanvas = document.getElementById('crt-noise-forwhom');
   if (!crtCanvas) return;
@@ -209,3 +228,4 @@ document.addEventListener('DOMContentLoaded', () => {
   resize();
   drawCRT();
 });
+
