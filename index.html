@@ -111,142 +111,6 @@
   <script src="./src/app.js" defer></script>
 </head>
 
-
-<body>
-  <script>
-window.TELEGRAM_COURSE = 'webinar_wapt_2026';
-</script>
-
-<script>
-(function() {
-  var s = document.createElement('script');
-  s.src = 'https://tracker.codeby.school/tracker.min.js';
-  s.async = true;
-  s.onload = function() {
-    if (window.CodebyTracker) {
-      CodebyTracker.init({
-        supabaseUrl: 'https://fdqmcnrsppscyxuefihh.supabase.co',
-        supabaseKey: 'sb_publishable_zvZSB4FEg512USuzAoyZyA_X5tct2J9',
-        debug: false,
-        autoTrackPageViews: true,
-        autoTrackScrollDepth: false,
-        autoTrackTimeOnPage: true,
-        autoDecorateLinks: true,
-        sessionTimeoutMinutes: 30
-      });
-    }
-  };
-  document.body.appendChild(s);
-})();
-</script>
-
-<script>
-(function() {
-  'use strict';
-
-  var config = {
-    courseName: window.TELEGRAM_COURSE || 'wapt_2026',
-    botUsername: 'CodebyAcademyBot',
-    deepLinkBase: 'https://bot.codeby.school/start',
-    yandexMetrikaId: null,
-    debug: false
-  };
-
-  function getClientId() {
-    if (window.CodebyTracker && window.CodebyTracker.instance) {
-      var data = window.CodebyTracker.instance.getData ?
-                 window.CodebyTracker.instance.getData() : null;
-      if (data && data.clientId) return data.clientId;
-    }
-    if (window.CodebyTracker && typeof window.CodebyTracker.getClientId === 'function') {
-      return window.CodebyTracker.getClientId();
-    }
-    var stored = localStorage.getItem('codeby_client_id');
-    if (stored) return stored;
-    var match = document.cookie.match(/codeby_client_id=([^;]+)/);
-    if (match) return decodeURIComponent(match[1]);
-    return '';
-  }
-
-  function getUTMParams() {
-    var params = new URLSearchParams(window.location.search);
-    return {
-      utm_source: params.get('utm_source') || '',
-      utm_medium: params.get('utm_medium') || '',
-      utm_campaign: params.get('utm_campaign') || '',
-      utm_content: params.get('utm_content') || '',
-      utm_term: params.get('utm_term') || ''
-    };
-  }
-
-  function getDeepLink() {
-    var clientId = getClientId();
-    var utm = getUTMParams();
-    var params = new URLSearchParams();
-
-    if (clientId) params.append('cid', clientId);
-    params.append('course', config.courseName);
-
-    if (utm.utm_source) params.append('utm_source', utm.utm_source);
-    if (utm.utm_medium) params.append('utm_medium', utm.utm_medium);
-    if (utm.utm_campaign) params.append('utm_campaign', utm.utm_campaign);
-    if (utm.utm_content) params.append('utm_content', utm.utm_content);
-    if (utm.utm_term) params.append('utm_term', utm.utm_term);
-
-    return config.deepLinkBase + '?' + params.toString();
-  }
-
-  function openTelegram(source) {
-    var deepLink = getDeepLink();
-
-    if (window.CodebyTracker && window.CodebyTracker.instance &&
-        typeof window.CodebyTracker.instance.trackEvent === 'function') {
-      window.CodebyTracker.instance.trackEvent('telegram_intent', {
-        course: config.courseName,
-        source: source || 'button'
-      });
-    }
-
-    if (typeof ym !== 'undefined' && config.yandexMetrikaId) {
-      ym(config.yandexMetrikaId, 'reachGoal', 'telegram_click', {
-        course: config.courseName,
-        source: source || 'button'
-      });
-    }
-
-    window.open(deepLink, '_blank');
-  }
-
-  document.addEventListener('click', function(e) {
-    var button = e.target.closest('[data-telegram-button="true"]');
-    if (button) {
-      e.preventDefault();
-      openTelegram(button.dataset.telegramSource || 'button');
-      return;
-    }
-    var cta = e.target.closest('[data-telegram-cta]');
-    if (cta) {
-      e.preventDefault();
-      openTelegram('cta');
-      return;
-    }
-    var widget = e.target.closest('#telegram-link');
-    if (widget) {
-      e.preventDefault();
-      openTelegram('widget');
-      return;
-    }
-  });
-
-  window.TelegramWidget = {
-    open: openTelegram,
-    getDeepLink: getDeepLink,
-    getClientId: getClientId
-  };
-
-})();
-</script>
-
 <section class="relative min-h-screen flex flex-col items-center justify-center px-6 pb-16 bg-black text-white">
 
   <header class="top-0 left-0 w-full z-10 text-white px-6 py-4 md:px-10">
@@ -313,9 +177,7 @@ window.TELEGRAM_COURSE = 'webinar_wapt_2026';
       <div class="flex flex-col sm:flex-row gap-3">
         <!-- Регистрация → Telegram-бот -->
         <a
-          href="#"
-          data-telegram-button="true"
-          data-telegram-source="hero_register"
+          href="https://t.me/codebypracticum_bot?start=utm_wapt_webinar"
           class="bg-orange-500 hover:bg-orange-600 transition text-white font-bold py-3 px-6 rounded-full shadow-md w-full sm:w-auto text-center"
         >
           🔎 Зарегистрироваться на практикум
@@ -331,28 +193,11 @@ window.TELEGRAM_COURSE = 'webinar_wapt_2026';
           📣 Канал в Telegram
         </a>
       </div>
-
-      <div class="mt-10 w-full max-w-2xl">
-        <div class="bg-gray-900 border border-gray-800 rounded-xl shadow-xl p-4 font-mono text-base text-white relative overflow-auto">
-          <div class="text-green-400 mb-2 font-bold flex items-center gap-2">
-            <span>bash</span>
-          </div>
-
-          <pre
-            id="wapt-bash-block"
-            class="bg-transparent p-0 m-0 text-sm leading-relaxed whitespace-pre overflow-x-auto min-h-[170px]"
-          ></pre>
-
-          <div class="text-xs text-gray-300 mt-4">
-            🧪 Практика: как мыслит пентестер в black-box, где ломаются сканеры, и как находить баги через логику приложения
-          </div>
-        </div>
-      </div>
     </div>
 
     <div class="relative w-72 h-72 rounded-full border-4 border-white shadow-2xl flex items-center justify-center">
       <img
-        src="./images/photo_2025-05-09_10-37-10.jpg"
+        src="./images/2025-05-23 12-07-16_lev4nko.jpg"
         alt="WAPT практикум"
         class="w-full h-full object-cover scale-95 rounded-full"
       />
@@ -534,23 +379,20 @@ window.TELEGRAM_COURSE = 'webinar_wapt_2026';
       </p>
     </div>
 
-    <div
-      data-telegram-button="true"
-      data-telegram-source="for_whom_email"
+    <a
+      href="https://t.me/codebypracticum_bot?start=utm_wapt_webinar"
       class="relative group cursor-pointer w-full sm:w-[420px] bg-black border border-green-500 px-4 py-3 rounded-md text-green-400 text-sm tracking-wider flex justify-between items-center hover:brightness-125 transition"
     >
       <span class="select-none">> Введите ваш email</span>
       <span class="text-green-300 text-lg group-hover:translate-x-1 transition">█</span>
-    </div>
+    </a>
   </div>
 </section>
 
 <section id="info" class="relative w-full bg-gradient-to-br from-gray-900 via-gray-950 to-gray-800 text-white py-20 px-4 overflow-hidden">
   <div class="max-w-4xl mx-auto">
    <a
-      href="#"
-      data-telegram-button="true"
-      data-telegram-source="date_block"
+      href="https://t.me/codebypracticum_bot?start=utm_wapt_webinar"
       class="observe fade-in-up group w-full flex items-center justify-center gap-4 px-6 py-5 rounded-xl border border-gray-700 shadow-xl backdrop-blur-md bg-gray-900/60 hover:bg-gray-800/70 transition-all duration-300 hover:scale-[1.02] relative"
     >
       <div class="absolute inset-0 rounded-xl animate-ping-slow bg-orange-400/10 group-hover:bg-orange-400/20 z-0"></div>
@@ -577,9 +419,9 @@ window.TELEGRAM_COURSE = 'webinar_wapt_2026';
   <div class="relative z-10 max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-center gap-16">
     <div class="relative border-4 border-orange-500 rounded-full overflow-hidden w-72 h-72 shadow-2xl shrink-0 bg-black">
       <img
-        src="./images/acetone-202577-153510-232.png"
+        src="./images/2025-05-23 12-07-16_lev4nko.jpg"
         alt="Александр Медведев"
-        class="w-full h-full object-contain bg-black"
+        class="w-full h-full object-cover scale-95 rounded-full"
       >
     </div>
 
@@ -635,9 +477,7 @@ window.TELEGRAM_COURSE = 'webinar_wapt_2026';
 
     <div class="space-y-4">
      <a
-        href="#"
-        data-telegram-button="true"
-        data-telegram-source="cta_register"
+        href="https://t.me/codebypracticum_bot?start=utm_wapt_webinar"
         class="bg-orange-500 hover:bg-orange-600 transition text-white font-bold py-3 px-8 rounded-full shadow-md text-lg animate-pop text-center inline-block"
       >
         🔎 Зарегистрироваться
@@ -675,14 +515,5 @@ window.TELEGRAM_COURSE = 'webinar_wapt_2026';
     </div>
   </div>
 </footer>
-<!-- Telegram плавающий виджет -->
-<div class="tg-widget">
-  <a href="#" id="telegram-link" class="tg-widget__btn tg-widget__btn--pulse">
-    <svg class="tg-widget__icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.07-.2-.08-.06-.19-.04-.27-.02-.12.02-1.96 1.25-5.54 3.66-.52.36-1 .53-1.42.52-.47-.01-1.37-.26-2.03-.48-.82-.27-1.47-.42-1.42-.88.03-.24.37-.49 1.02-.74 3.98-1.73 6.64-2.87 7.97-3.43 3.79-1.58 4.58-1.86 5.09-1.87.11 0 .37.03.53.17.14.12.18.28.2.45-.02.07-.02.27-.04.42z"/>
-    </svg>
-    <span class="tg-widget__text">Написать в Telegram</span>
-  </a>
-</div>
 </body>
 </html>
