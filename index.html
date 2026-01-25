@@ -409,7 +409,7 @@
 
     <div class="mx-auto max-w-2xl rounded-xl shadow-lg border border-orange-400/50 bg-gray-900/60 p-6 mt-6 fade-in-up observe">
       <div class="text-base md:text-lg text-gray-200 leading-relaxed text-left">
-        Мы отправим <b class="text-orange-400">подтверждение на почту</b> и напомним
+        Мы отправим <b class="text-orange-400">подтверждение в Telegram</b> и напомним
         <b class="text-orange-400">за 1 час до начала</b> практикума.
       </div>
     </div>
@@ -454,5 +454,28 @@
     </div>
   </div>
 </footer>
+<!-- Codeby Tracker v1.1 -->
+<script>
+(function() {
+  var s = document.createElement('script');
+  s.src = 'https://tracker.codeby.school/tracker.min.js';
+  s.async = true;
+  s.onload = function() {
+    if (window.CodebyTracker) {
+      CodebyTracker.init({
+        supabaseUrl: 'https://fdqmcnrsppscyxuefihh.supabase.co',
+        supabaseKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZkcW1jbnJzcHBzY3l4dWVmaWhoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjU1MjY2MjEsImV4cCI6MjA4MTEwMjYyMX0.k_naQ15YQWXwE0uR_LGxCPSkXRNCSnVdvaUMVrTn8GY',
+        debug: false,
+        autoTrackPageViews: true,
+        autoTrackScrollDepth: false,
+        autoTrackTimeOnPage: true,
+        autoDecorateLinks: true,
+        sessionTimeoutMinutes: 30
+      });
+    }
+  };
+  document.body.appendChild(s);
+})();
+</script>
 </body>
 </html>
