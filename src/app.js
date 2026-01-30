@@ -1,231 +1,297 @@
-function openIframe() {
-  document.getElementById('iframeModal').classList.remove('hidden');
-}
-function closeIframe() {
-  document.getElementById('iframeModal').classList.add('hidden');
-}
-document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape') closeIframe();
-});
+(() => {
+  "use strict";
 
-const waptLines = [
-      "┌──────────────────────────────┬──────────────────────────────────────────────┐",
-      "│ Маркетинг / ожидания         │ Практика WAPT (black-box)                    │",
-      "├──────────────────────────────┼──────────────────────────────────────────────┤",
-      "│ «Запусти сканер и готово»    │ Где сканер молчит — включается логика        │",
-      "│ «Подбери payload по списку»  │ Анализ флоу, ролей, валидаций, бизнес-правил │",
-      "│ «Это всё про XSS»            │ Серверные баги: логика, доступ, интеграции   │",
-      "│ «Достаточно Burp»            │ Burp + мышление + методология + заметки      │",
-      "└──────────────────────────────┴──────────────────────────────────────────────┘"
+  const $ = (sel, root = document) => root.querySelector(sel);
+  const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
+
+  function onReady(fn) {
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", fn, { once: true });
+    } else {
+      fn();
+    }
+  }
+
+  function rafLoop(draw) {
+    let rafId = 0;
+    const tick = () => {
+      rafId = requestAnimationFrame(tick);
+      draw();
+    };
+    tick();
+    return () => cancelAnimationFrame(rafId);
+  }
+
+  function initIframeModal() {
+    const modal = $("#iframeModal");
+    if (!modal) return;
+
+    const open = () => modal.classList.remove("hidden");
+    const close = () => modal.classList.add("hidden");
+
+    window.openIframe = open;
+    window.closeIframe = close;
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") close();
+    });
+  }
+
+  function typeLoop(lines, targetId, charDelay = 18, linePause = 520) {
+    const el = document.getElementById(targetId);
+    if (!el) return;
+
+    const cursorChar = "█";
+    const cursor = () => cursorChar;
+
+    let lineIdx = 0;
+    let charIdx = 0;
+    let stopped = false;
+    let timeoutId = 0;
+
+    const schedule = (fn, ms) => {
+      timeoutId = window.setTimeout(fn, ms);
+    };
+
+    const tick = () => {
+      if (stopped) return;
+
+      if (lineIdx >= lines.length) {
+        schedule(() => {
+          el.textContent = "";
+          lineIdx = 0;
+          charIdx = 0;
+          tick();
+        }, 2000);
+        return;
+      }
+
+      const current = lines[lineIdx] ?? "";
+
+      if (charIdx < current.length) {
+        el.textContent = el.textContent.replace(/\u2588/g, "") + current[charIdx] + cursor();
+        charIdx++;
+        schedule(tick, charDelay);
+      } else {
+        el.textContent = el.textContent.replace(/\u2588/g, "") + "\n";
+        charIdx = 0;
+        lineIdx++;
+        schedule(tick, linePause + Math.random() * 240);
+      }
+    };
+
+    tick();
+
+    return () => {
+      stopped = true;
+      clearTimeout(timeoutId);
+    };
+  }
+
+  const waptLines = [
+    "┌──────────────────────────────┬──────────────────────────────────────────────┐",
+    "│ Маркетинг / ожидания         │ Практика WAPT (black-box)                    │",
+    "├──────────────────────────────┼──────────────────────────────────────────────┤",
+    "│ «Запусти сканер и готово»    │ Где сканер молчит — включается логика        │",
+    "│ «Подбери payload по списку»  │ Анализ флоу, ролей, валидаций, бизнес-правил │",
+    "│ «Это всё про XSS»            │ Серверные баги: логика, доступ, интеграции   │",
+    "│ «Достаточно Burp»            │ Burp + мышление + методология + заметки      │",
+    "└──────────────────────────────┴──────────────────────────────────────────────┘",
+  ];
+
+  function typeBash(lines, targetId, lineDelay = 220, charDelay = 10) {
+    const el = document.getElementById(targetId);
+    if (!el) return;
+
+    el.textContent = "";
+    let line = 0;
+    let char = 0;
+    let printed = "";
+
+    const typeChar = () => {
+      if (line >= lines.length) return;
+
+      const currentLine = lines[line];
+
+      if (char < currentLine.length) {
+        printed += currentLine[char];
+        const prev = el.textContent.split("\n").slice(0, line).join("\n");
+        el.textContent = prev + (line > 0 ? "\n" : "") + printed;
+        char++;
+        setTimeout(typeChar, charDelay);
+      } else {
+        el.textContent += line < lines.length - 1 ? "\n" : "";
+        line++;
+        char = 0;
+        printed = "";
+        setTimeout(typeChar, lineDelay);
+      }
+    };
+
+    typeChar();
+  }
+
+  function initTypingEffects() {
+   const waptTypingLines = [
+      "$ osint: start investigation ...",
+      "→ subject: company / individual",
+      "",
+      "$ collect: open sources",
+      "→ registries: ЕГРЮЛ / ФНС / суды",
+      "→ media: news / leaks / publications",
+      "→ digital: domains / WHOIS / соцсети",
+      "",
+      "$ analyze: build connections",
+      "→ shared founders / directors",
+      "→ affiliates / proxies / nominees",
+      "→ timeline inconsistencies detected",
+      "",
+      "$ verify: cross-check facts",
+      "→ conflicting data found",
+      "→ confidence level: medium → high",
+      "",
+      "done: identify real decision-makers."
     ];
 
-    function typeBash(lines, targetId, lineDelay = 220, charDelay = 10) {
-      const el = document.getElementById(targetId);
-      if (!el) return;
 
-      el.textContent = "";
-      let line = 0;
-      let char = 0;
+    typeLoop(waptTypingLines, "wapt-typing", 18, 520);
 
-      function typeLine() {
-        if (line >= lines.length) return;
+    const bashTarget = document.getElementById("wapt-bash-block");
+    if (!bashTarget) return;
 
-        const currentLine = lines[line];
-        let printed = "";
+    if (!("IntersectionObserver" in window)) {
+      typeBash(waptLines, "wapt-bash-block");
+      return;
+    }
 
-        function typeChar() {
-          if (char < currentLine.length) {
-            printed += currentLine[char];
-            el.textContent =
-              el.textContent.split("\n").slice(0, line).join("\n") +
-              (line > 0 ? "\n" : "") +
-              printed;
-
-            char++;
-            setTimeout(typeChar, charDelay);
-          } else {
-            el.textContent += line < lines.length - 1 ? "\n" : "";
-            line++;
-            char = 0;
-            setTimeout(typeLine, lineDelay);
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            typeBash(waptLines, "wapt-bash-block");
+            observer.unobserve(entry.target);
           }
         }
+      },
+      { threshold: 0.5 }
+    );
 
-        typeChar();
-      }
+    observer.observe(bashTarget);
+  }
 
-      typeLine();
-    }
+  function initMatrixCanvas(canvasId) {
+    const canvas = document.getElementById(canvasId);
+    if (!canvas) return;
 
-    const waptBlock = document.getElementById("wapt-bash-block");
-    if (waptBlock) {
-      const observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              typeBash(waptLines, "wapt-bash-block");
-              observer.unobserve(waptBlock);
-            }
-          });
-        },
-        { threshold: 0.5 }
-      );
+    const ctx = canvas.getContext("2d");
+    const letters = "01⎋⌘⚠$@#%&≡░▓█";
+    const fontSize = 18;
 
-      observer.observe(waptBlock);
-    }
-    const waptTypingLines = [
-      "$ recon: map attack surface ...",
-      "→ endpoints: /auth /api /billing /admin",
-      "→ roles: guest / user / manager",
-      "→ stateful flow detected: checkout -> confirm -> pay",
-      "",
-      "$ scanner: signatures matched ...",
-      "→ 0 critical found (⚠️ not a guarantee)",
-      "",
-      "$ manual: test business logic ...",
-      "→ IDOR candidate in /api/orders/{id}",
-      "→ auth bypass hypothesis: token reuse in refresh flow",
-      "→ rate limits: inconsistent between routes",
-      "",
-      "done: prioritize by impact, not by payload list."
-    ];
+    let columns = 0;
+    let drops = [];
 
-    function typeLoop(lines, targetId, charDelay = 18, linePause = 520) {
-      const el = document.getElementById(targetId);
-      if (!el) return;
+    const resize = () => {
+      const dpr = window.devicePixelRatio || 1;
+      const w = Math.floor(window.innerWidth * dpr);
+      const h = Math.floor(window.innerHeight * dpr);
 
-      let lineIdx = 0;
-      let charIdx = 0;
+      canvas.width = w;
+      canvas.height = h;
+      canvas.style.width = window.innerWidth + "px";
+      canvas.style.height = window.innerHeight + "px";
 
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-      function tick() {
-        if (lineIdx >= lines.length) {
-          setTimeout(() => {
-            el.textContent = "";
-            lineIdx = 0;
-            charIdx = 0;
-            tick();
-          }, 2000);
-          return;
+      columns = Math.floor(window.innerWidth / fontSize);
+      drops = Array(columns).fill(1);
+    };
+
+    resize();
+    window.addEventListener("resize", resize, { passive: true });
+
+    rafLoop(() => {
+      ctx.fillStyle = "rgba(0,0,0,0.07)";
+      ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
+
+      ctx.font = `${fontSize}px monospace`;
+      ctx.fillStyle = "#ffa600";
+
+      for (let i = 0; i < drops.length; i++) {
+        const text = letters[(Math.random() * letters.length) | 0];
+        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+        if (drops[i] * fontSize > window.innerHeight && Math.random() > 0.96) {
+          drops[i] = 0;
         }
-
-        const current = lines[lineIdx];
-
-        if (charIdx < current.length) {
-          el.textContent = el.textContent.replace(/\u2588/g, "") + current[charIdx] + cursor();
-          charIdx++;
-          setTimeout(tick, charDelay);
-        } else {
-          el.textContent = el.textContent.replace(/\u2588/g, "") + "\n";
-          charIdx = 0;
-          lineIdx++;
-          setTimeout(tick, linePause + Math.random() * 240);
-        }
+        drops[i]++;
       }
-
-      tick();
-    }
-
-    document.addEventListener("DOMContentLoaded", () => {
-      typeLoop(waptTypingLines, "wapt-typing", 18, 520);
     });
-
-(function(){
-  const canvas = document.getElementById("matrix-bg-osint");
-  if (!canvas) return;
-  const ctx = canvas.getContext("2d");
-
-  function resize() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
   }
-  resize();
-  window.addEventListener('resize', resize);
 
-  const letters = "01⎋⌘⚠$@#%&≡░▓█";
-  const fontSize = 18;
-  let columns, drops;
+  function initCrtNoise(canvasId, alpha = 18) {
+    const canvas = document.getElementById(canvasId);
+    if (!canvas) return;
 
-  function setup() {
-    columns = Math.floor(canvas.width / fontSize);
-    drops = Array(columns).fill(1);
-  }
-  setup();
-  window.addEventListener('resize', setup);
+    const ctx = canvas.getContext("2d");
 
-  function draw() {
-    ctx.fillStyle = "rgba(0,0,0,0.07)";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    ctx.font = fontSize + "px monospace";
-    ctx.fillStyle = "#ffa600";
-    for (let i = 0; i < drops.length; i++) {
-      const text = letters[Math.floor(Math.random() * letters.length)];
-      ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-      if (drops[i] * fontSize > canvas.height && Math.random() > 0.96) {
-        drops[i] = 0;
+    const resize = () => {
+      const w = canvas.offsetWidth || canvas.clientWidth || window.innerWidth;
+      const h = canvas.offsetHeight || canvas.clientHeight || window.innerHeight;
+      canvas.width = w;
+      canvas.height = h;
+    };
+
+    resize();
+    window.addEventListener("resize", resize, { passive: true });
+
+    rafLoop(() => {
+      const w = canvas.width;
+      const h = canvas.height;
+      const img = ctx.createImageData(w, h);
+
+      for (let i = 0; i < img.data.length; i += 4) {
+        const v = (Math.random() * 255) | 0;
+        img.data[i] = v;
+        img.data[i + 1] = v;
+        img.data[i + 2] = v;
+        img.data[i + 3] = alpha;
       }
-      drops[i]++;
-    }
-    requestAnimationFrame(draw);
-  }
-  draw();
-})();
 
-const globalObserver = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (!entry.isIntersecting) return;
-    entry.target.classList.add('animate');
-    globalObserver.unobserve(entry.target);
+      ctx.putImageData(img, 0, 0);
+    });
+  }
+
+  function initObservers() {
+    const observed = $$(".observe");
+    if (!observed.length) return;
+
+    if (!("IntersectionObserver" in window)) {
+      observed.forEach((el) => el.classList.add("animate"));
+      return;
+    }
+
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          entry.target.classList.add("animate");
+          io.unobserve(entry.target);
+        }
+      },
+      { threshold: 0.3 }
+    );
+
+    observed.forEach((el) => io.observe(el));
+  }
+
+  onReady(() => {
+    initIframeModal();
+    initTypingEffects();
+    initMatrixCanvas("matrix-bg-osint");
+    initObservers();
+
+    initCrtNoise("crt-noise-author", 18);
+    initCrtNoise("crt-noise-forwhom", 18);
   });
-}, { threshold: 0.3 });
-
-document.querySelectorAll('.observe').forEach(el => {
-  globalObserver.observe(el);
-});
-document.addEventListener('DOMContentLoaded', () => {
-  const crtCanvas = document.getElementById('crt-noise-author');
-  if (!crtCanvas) return;
-  const ctx = crtCanvas.getContext('2d');
-  function resize() {
-    crtCanvas.width = crtCanvas.offsetWidth || crtCanvas.clientWidth || window.innerWidth;
-    crtCanvas.height = crtCanvas.offsetHeight || crtCanvas.clientHeight || window.innerHeight;
-  }
-  function drawCRT() {
-    const w = crtCanvas.width, h = crtCanvas.height;
-    const img = ctx.createImageData(w, h);
-    for (let i = 0; i < img.data.length; i += 4) {
-      const val = Math.random() * 255;
-    }
-    ctx.putImageData(img, 0, 0);
-    requestAnimationFrame(drawCRT);
-  }
-  window.addEventListener('resize', resize);
-  resize();
-  drawCRT();
-});
-document.addEventListener('DOMContentLoaded', () => {
-  const crtCanvas = document.getElementById('crt-noise-forwhom');
-  if (!crtCanvas) return;
-  const ctx = crtCanvas.getContext('2d');
-  function resize() {
-    crtCanvas.width = crtCanvas.offsetWidth || crtCanvas.clientWidth || window.innerWidth;
-    crtCanvas.height = crtCanvas.offsetHeight || crtCanvas.clientHeight || window.innerHeight;
-  }
-  function drawCRT() {
-    const w = crtCanvas.width, h = crtCanvas.height;
-    const img = ctx.createImageData(w, h);
-    for (let i = 0; i < img.data.length; i += 4) {
-      const val = Math.random() * 255;
-      img.data[i] = val;
-      img.data[i + 1] = val;
-      img.data[i + 2] = val;
-      img.data[i + 3] = 18;
-    }
-    ctx.putImageData(img, 0, 0);
-    requestAnimationFrame(drawCRT);
-  }
-  window.addEventListener('resize', resize);
-  resize();
-  drawCRT();
-});
+})();
 
