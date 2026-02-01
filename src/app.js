@@ -37,146 +37,27 @@
     });
   }
 
-  function typeLoop(lines, targetId, charDelay = 18, linePause = 520) {
-    const el = document.getElementById(targetId);
-    if (!el) return;
-
-    const cursorChar = "█";
-    const cursor = () => cursorChar;
-
-    let lineIdx = 0;
-    let charIdx = 0;
-    let stopped = false;
-    let timeoutId = 0;
-
-    const schedule = (fn, ms) => {
-      timeoutId = window.setTimeout(fn, ms);
-    };
-
-    const tick = () => {
-      if (stopped) return;
-
-      if (lineIdx >= lines.length) {
-        schedule(() => {
-          el.textContent = "";
-          lineIdx = 0;
-          charIdx = 0;
-          tick();
-        }, 2000);
-        return;
-      }
-
-      const current = lines[lineIdx] ?? "";
-
-      if (charIdx < current.length) {
-        el.textContent = el.textContent.replace(/\u2588/g, "") + current[charIdx] + cursor();
-        charIdx++;
-        schedule(tick, charDelay);
-      } else {
-        el.textContent = el.textContent.replace(/\u2588/g, "") + "\n";
-        charIdx = 0;
-        lineIdx++;
-        schedule(tick, linePause + Math.random() * 240);
-      }
-    };
-
-    tick();
-
-    return () => {
-      stopped = true;
-      clearTimeout(timeoutId);
-    };
-  }
-
-  const waptLines = [
-    "┌──────────────────────────────┬──────────────────────────────────────────────┐",
-    "│ Маркетинг / ожидания         │ Практика WAPT (black-box)                    │",
-    "├──────────────────────────────┼──────────────────────────────────────────────┤",
-    "│ «Запусти сканер и готово»    │ Где сканер молчит — включается логика        │",
-    "│ «Подбери payload по списку»  │ Анализ флоу, ролей, валидаций, бизнес-правил │",
-    "│ «Это всё про XSS»            │ Серверные баги: логика, доступ, интеграции   │",
-    "│ «Достаточно Burp»            │ Burp + мышление + методология + заметки      │",
-    "└──────────────────────────────┴──────────────────────────────────────────────┘",
-  ];
-
-  function typeBash(lines, targetId, lineDelay = 220, charDelay = 10) {
-    const el = document.getElementById(targetId);
-    if (!el) return;
-
-    el.textContent = "";
-    let line = 0;
-    let char = 0;
-    let printed = "";
-
-    const typeChar = () => {
-      if (line >= lines.length) return;
-
-      const currentLine = lines[line];
-
-      if (char < currentLine.length) {
-        printed += currentLine[char];
-        const prev = el.textContent.split("\n").slice(0, line).join("\n");
-        el.textContent = prev + (line > 0 ? "\n" : "") + printed;
-        char++;
-        setTimeout(typeChar, charDelay);
-      } else {
-        el.textContent += line < lines.length - 1 ? "\n" : "";
-        line++;
-        char = 0;
-        printed = "";
-        setTimeout(typeChar, lineDelay);
-      }
-    };
-
-    typeChar();
-  }
-
-  function initTypingEffects() {
-   const waptTypingLines = [
-      "$ osint: start investigation ...",
-      "→ subject: company / individual",
-      "",
-      "$ collect: open sources",
-      "→ registries: ЕГРЮЛ / ФНС / суды",
-      "→ media: news / leaks / publications",
-      "→ digital: domains / WHOIS / соцсети",
-      "",
-      "$ analyze: build connections",
-      "→ shared founders / directors",
-      "→ affiliates / proxies / nominees",
-      "→ timeline inconsistencies detected",
-      "",
-      "$ verify: cross-check facts",
-      "→ conflicting data found",
-      "→ confidence level: medium → high",
-      "",
-      "done: identify real decision-makers."
-    ];
-
-
-    typeLoop(waptTypingLines, "wapt-typing", 18, 520);
-
-    const bashTarget = document.getElementById("wapt-bash-block");
-    if (!bashTarget) return;
+  function initObservers() {
+    const observed = $$(".observe");
+    if (!observed.length) return;
 
     if (!("IntersectionObserver" in window)) {
-      typeBash(waptLines, "wapt-bash-block");
+      observed.forEach((el) => el.classList.add("animate"));
       return;
     }
 
-    const observer = new IntersectionObserver(
+    const io = new IntersectionObserver(
       (entries) => {
         for (const entry of entries) {
-          if (entry.isIntersecting) {
-            typeBash(waptLines, "wapt-bash-block");
-            observer.unobserve(entry.target);
-          }
+          if (!entry.isIntersecting) continue;
+          entry.target.classList.add("animate");
+          io.unobserve(entry.target);
         }
       },
-      { threshold: 0.5 }
+      { threshold: 0.3 }
     );
 
-    observer.observe(bashTarget);
+    observed.forEach((el) => io.observe(el));
   }
 
   function initMatrixCanvas(canvasId) {
@@ -261,37 +142,111 @@
     });
   }
 
-  function initObservers() {
-    const observed = $$(".observe");
-    if (!observed.length) return;
+  function initAfterPracticumBg(canvasId, sectionId) {
+    const canvas = document.getElementById(canvasId);
+    const section = document.getElementById(sectionId);
+    if (!canvas || !section) return;
 
-    if (!("IntersectionObserver" in window)) {
-      observed.forEach((el) => el.classList.add("animate"));
-      return;
+    const ctx = canvas.getContext("2d");
+
+    let w = 0;
+    let h = 0;
+    let dpr = 1;
+
+    const rand = (a, b) => a + Math.random() * (b - a);
+
+    const state = {
+      dots: [],
+      glowPulse: 0
+    };
+
+    function resize() {
+      dpr = window.devicePixelRatio || 1;
+      const rect = section.getBoundingClientRect();
+
+      w = Math.max(1, Math.floor(rect.width));
+      h = Math.max(1, Math.floor(rect.height));
+
+      canvas.width = Math.floor(w * dpr);
+      canvas.height = Math.floor(h * dpr);
+      canvas.style.width = w + "px";
+      canvas.style.height = h + "px";
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+      state.dots = Array.from({ length: state.dotCount }, () => ({
+        x: rand(0, w),
+        y: rand(0, h),
+        vx: rand(-state.speed, state.speed),
+        vy: rand(-state.speed, state.speed),
+        r: rand(1.0, 2.4),
+      }));
     }
 
-    const io = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          if (!entry.isIntersecting) continue;
-          entry.target.classList.add("animate");
-          io.unobserve(entry.target);
-        }
-      },
-      { threshold: 0.3 }
-    );
+    resize();
+    window.addEventListener("resize", resize, { passive: true });
 
-    observed.forEach((el) => io.observe(el));
+    if ("ResizeObserver" in window) {
+      const ro = new ResizeObserver(() => resize());
+      ro.observe(section);
+    }
+
+    rafLoop(() => {
+      ctx.clearRect(0, 0, w, h);
+
+      state.glowPulse += 0.01;
+      const glow = 0.08 + Math.sin(state.glowPulse) * 0.02;
+
+      ctx.fillStyle = `rgba(255, 166, 0, ${glow})`;
+      ctx.beginPath();
+      ctx.ellipse(w * 0.25, h * 0.35, w * 0.22, h * 0.18, 0.2, 0, Math.PI * 2);
+      ctx.ellipse(w * 0.75, h * 0.55, w * 0.26, h * 0.20, -0.2, 0, Math.PI * 2);
+      ctx.fill();
+
+      for (const p of state.dots) {
+        p.x += p.vx;
+        p.y += p.vy;
+
+        if (p.x <= 0 || p.x >= w) p.vx *= -1;
+        if (p.y <= 0 || p.y >= h) p.vy *= -1;
+
+        ctx.fillStyle = "rgba(255,166,0,0.75)";
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      for (let i = 0; i < state.dots.length; i++) {
+        const a = state.dots[i];
+        for (let j = i + 1; j < state.dots.length; j++) {
+          const b = state.dots[j];
+          const dx = a.x - b.x;
+          const dy = a.y - b.y;
+          const dist = Math.hypot(dx, dy);
+
+          if (dist > state.maxLinkDist) continue;
+
+          const alpha = 0.22 * (1 - dist / state.maxLinkDist);
+          ctx.strokeStyle = `rgba(255,166,0,${alpha})`;
+          ctx.lineWidth = 1;
+
+          ctx.beginPath();
+          ctx.moveTo(a.x, a.y);
+          ctx.lineTo(b.x, b.y);
+          ctx.stroke();
+        }
+      }
+    });
   }
 
   onReady(() => {
     initIframeModal();
-    initTypingEffects();
-    initMatrixCanvas("matrix-bg-osint");
     initObservers();
 
+    initMatrixCanvas("matrix-bg-osint");
     initCrtNoise("crt-noise-author", 18);
     initCrtNoise("crt-noise-forwhom", 18);
+
+    initAfterPracticumBg("after-practicum-bg", "after-practicum");
   });
 })();
 

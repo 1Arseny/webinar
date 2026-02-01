@@ -655,6 +655,14 @@ video {
   margin-top: 1.5rem;
 }
 
+.mt-12 {
+  margin-top: 3rem;
+}
+
+.mt-3 {
+  margin-top: 0.75rem;
+}
+
 .inline-block {
   display: inline-block;
 }
@@ -847,6 +855,10 @@ video {
   gap: 2rem;
 }
 
+.gap-6 {
+  gap: 1.5rem;
+}
+
 .space-y-10 > :not([hidden]) ~ :not([hidden]) {
   --tw-space-y-reverse: 0;
   margin-top: calc(2.5rem * calc(1 - var(--tw-space-y-reverse)));
@@ -1010,10 +1022,6 @@ video {
   background-color: rgb(249 115 22 / var(--tw-bg-opacity));
 }
 
-.bg-white\/10 {
-  background-color: rgb(255 255 255 / 0.1);
-}
-
 .bg-\[radial-gradient\(\#0f0_1px\2c transparent_1px\)\] {
   background-image: radial-gradient(#0f0 1px,transparent 1px);
 }
@@ -1072,6 +1080,10 @@ video {
 
 .bg-\[size\:28px_28px\] {
   background-size: 28px 28px;
+}
+
+.bg-\[size\:24px_24px\] {
+  background-size: 24px 24px;
 }
 
 .object-cover {
@@ -1233,6 +1245,10 @@ video {
 
 .leading-tight {
   line-height: 1.25;
+}
+
+.leading-none {
+  line-height: 1;
 }
 
 .tracking-\[0\.22em\] {
@@ -1557,10 +1573,6 @@ video {
   background-color: rgb(234 88 12 / var(--tw-bg-opacity));
 }
 
-.hover\:bg-white\/15:hover {
-  background-color: rgb(255 255 255 / 0.15);
-}
-
 .hover\:underline:hover {
   text-decoration-line: underline;
 }
@@ -1589,6 +1601,10 @@ video {
 }
 
 @media (min-width: 640px) {
+  .sm\:col-span-2 {
+    grid-column: span 2 / span 2;
+  }
+
   .sm\:w-\[420px\] {
     width: 420px;
   }
